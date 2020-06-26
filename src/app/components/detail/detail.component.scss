@@ -1,0 +1,8 @@
+.detail-content {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+
+  p {
+    grid-column: 2 / 8;
+  }
+}

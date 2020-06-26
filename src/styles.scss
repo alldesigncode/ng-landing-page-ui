@@ -1,1 +1,295 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  --box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --color-white: #fff;
+  --color-light-1: #b8b8b8;
+  --color-light: #f8f8f8;
+  --color-black: #0f0f0f;
+  --color-black-1: #2c2c2c;
+  --color-grey: rgba(218, 218, 218, 0.9);
+}
+
+%backgroundStyles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+@mixin buttonContainerStyles($width, $height, $leftMargin) {
+  position: relative;
+  grid-column: 7 / -1;
+  display: inline-block;
+  justify-self: start;
+  align-self: center;
+  margin-left: $leftMargin;
+  width: $width;
+  height: $height;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: inherit;
+  position: relative;
+  height: 100vh;
+  overflow: scroll;
+}
+
+.background {
+  background-image: url(./assets/background.jpeg);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  @extend %backgroundStyles;
+  z-index: -2;
+  filter: blur(12px) brightness(1.1);
+}
+
+.background-white {
+  @extend %backgroundStyles;
+  background-color: var(--color-light);
+  box-shadow: var(--box-shadow);
+  z-index: -2;
+  filter: opacity(0.80);
+}
+
+.main {
+  z-index: 10;
+  height: 100vh;
+  display: grid;
+  grid-template-columns:
+    [side-start] 150px [side-end full-start] minmax(50px, 1fr)
+    [center-start] repeat(12, [col-start] minmax(min-content, 100px) [col-end])
+    [center-end] minmax(50px, 1fr) [full-end];
+}
+
+.side-nav {
+  grid-row: 1 / -1;
+  grid-column: side-start / side-end;
+  border-right: 2px solid var(--color-grey);
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+}
+.content {
+  grid-row: 1 / -1;
+  grid-column: full-start / full-end;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(min-content, 1fr));
+  grid-template-rows: repeat(2, min-content);
+}
+
+.header {
+  grid-column: 1 / -1;
+  grid-row: 1 / 2;
+  height: 130px;
+}
+
+span.plus {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 1px;
+  background: var(--color-black-1);
+
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 1px;
+    background: var(--color-black-1);
+    transform: rotate(90deg);
+    width: 100%;
+    transition: all 0.3s ease-out;
+  }
+}
+
+span.remove {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 25px;
+  height: 1px;
+  background: var(--color-black-1);
+
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 1px;
+    background: var(--color-black-1);
+    transform: rotate(90deg);
+    width: 100%;
+    transition: all 0.3s ease-out;
+  }
+}
+
+.btn-close {
+  @include buttonContainerStyles(50px, 50px, 0);
+  align-self: start;
+  justify-self: center;
+  grid-row: 1 / 2;
+  margin-top: 40px;
+}
+
+.menu-rotated {
+  list-style: none;
+  align-self: center;
+  justify-self: center;
+  grid-row: 2 / 3;
+  grid-column: 1 / span 7;
+
+  &__item:first-child > &__link {
+    color: var(--color-black);
+  }
+
+  &__item {
+    transform: rotate(90deg);
+    margin-top: 45px;
+  }
+
+  &__link,
+  &__link:link,
+  &__link:visited {
+    font-weight: 500;
+    color: var(--color-light-1);
+  }
+
+
+}
+
+.list {
+  grid-row: 2/-1;
+  grid-column: 1/-1;
+  display: grid;
+  position: relative;
+  overflow: scroll;
+  height: calc(100vh - 130px);
+
+  & > div.box {
+    height: 300px;
+    position: relative;
+    transition: all 0.3s 0.5s ease-out;
+
+    .box-background {
+      position: absolute;
+      background: transparent;
+      @extend %backgroundStyles;
+      filter: opacity(1);
+      z-index: -1;
+      transition: all 0.3s ease-out;
+    }
+
+    .box-container {
+      grid-row: 1 / -1;
+      grid-column: 1 / -1;
+      display: grid;
+      align-items: center;
+      grid-template-columns: repeat(8, 1fr);
+      transition: all 0.3s 0.5s ease-out;
+    }
+
+    .box-detail {
+      grid-row: 2 / -1;
+      grid-column: 1 / -1;
+    }
+
+    &:hover > .box-background {
+      background: #fff;
+      filter: opacity(0.80);
+    }
+  }
+}
+
+.list::-webkit-scrollbar,
+.list::-webkit-scrollbar-thumb {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+
+.box {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(8, 1fr);
+
+  &__number {
+    font-size: 100px;
+    justify-self: center;
+    grid-column: 1 / 3;
+    grid-row: 1 / -1;
+  }
+
+  &__description {
+    grid-column: 3/7;
+
+    .heading-1 {
+      font-size: 70px;
+    }
+
+    .paragraph {
+      margin-top: 15px;
+    }
+  }
+
+  &__view {
+    @include buttonContainerStyles(100px, 100px, 30px);
+  }
+
+  &__detail {
+    position: absolute;
+  }
+}
+
+.menu {
+  display: grid;
+  list-style: none;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  align-items: center;
+  justify-items: center;
+  height: inherit;
+
+  &__item:first-child > &__link {
+    color: var(--color-black);
+  }
+
+  &__link,
+  &__link:link,
+  &__link:visited {
+    font-weight: 500;
+    color: var(--color-light-1);
+  }
+}
+
+.box__view > span.active::before {
+  transform: rotate(0);
+}
+
+.list > .box.active {
+  height: calc(100vh - 130px);
+  z-index: 200;
+}
+.list > .box.active .box-container {
+  transform: translateY(-190%);
+}
+
+.overflow-hidden {
+  overflow: hidden !important;
+}

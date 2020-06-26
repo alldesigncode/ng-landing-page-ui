@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ng-blur-animation"
+    }
+  },
+  "defaultProject": "ng-blur-animation",
+  "cli": {
+    "analytics": false
+  }
 }
